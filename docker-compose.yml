@@ -1,0 +1,62 @@
+version: '2.1'
+
+services:
+  webhookpix-prod:
+    image: laenderoliveira/webhookpix
+    container_name: webhookpix-prod
+    build:
+      context: ./WebhookPix
+    restart: always
+    environment:
+      VIRTUAL_HOST: mtls-gn.pix.dns-cloud.net
+      LETSENCRYPT_HOST: mtls-gn.pix.dns-cloud.net
+      ENABLE_MTLS: "true"
+      CERT_MTLS_NAME: chain-pix-prod.crt
+      RABBITMQ__HOSTNAME: rabbitmq-pix
+      RABBITMQ__PORT: 5672
+      RABBITMQ__USERNAME: webhook
+      RABBITMQ__PASSWORD: webhook
+      RABBITMQ__EXCHANGE: hub
+      RABBITMQ__EXCHANGETYPE: topic
+    networks:
+      - "pix"
+  webhookpix-homolog:
+    image: laenderoliveira/webhookpix
+    build:
+      context: ./WebhookPix
+    container_name: webhookpix-homolog
+    restart: always
+    environment:
+      VIRTUAL_HOST: mtls-gn-h.pix.dns-cloud.net
+      LETSENCRYPT_HOST: mtls-gn-h.pix.dns-cloud.net
+      ENABLE_MTLS: "true"
+      CERT_MTLS_NAME: chain-pix-sandbox.crt
+      RABBITMQ__HOSTNAME: rabbitmq-pix
+      RABBITMQ__PORT: 5672
+      RABBITMQ__USERNAME: webhook
+      RABBITMQ__PASSWORD: webhook
+      RABBITMQ__EXCHANGE: hub
+      RABBITMQ__EXCHANGETYPE: topic
+    networks:
+      - "pix"
+  workerpix:
+    image: laenderoliveira/workerpix
+    build:
+      context: ./WorkerPix
+    container_name: workerpix
+    restart: always
+    environment:
+      RABBITMQ__HOSTNAME: rabbitmq-pix
+      RABBITMQ__PORT: 5672
+      RABBITMQ__USERNAME: worker01
+      RABBITMQ__PASSWORD: worker01
+      RABBITMQ__EXCHANGE: hub
+      RABBITMQ__QUEUE: pix.all
+      RABBITMQ__ROUTINGKEY: pix.*
+
+    networks:
+      - "pix"
+
+networks:
+  pix:
+    external: true

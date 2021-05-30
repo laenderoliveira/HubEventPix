@@ -1,0 +1,27 @@
+version: '2.1'
+
+services:
+  rabbitmq-pix:
+    build: .
+    container_name: rabbitmq-pix
+    environment: 
+      VIRTUAL_HOST: rabbitmq.pix.dns-cloud.net
+      LETSENCRYPT_HOST: rabbitmq.pix.dns-cloud.net
+      VITUAL_PORT: 5672
+    volumes: 
+      - ./etc/definitions.json:/etc/rabbitmq/definitions.json
+      - ./etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./data:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+      - ./logs:/var/log/rabbitmq/log
+    ports:
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 5s
+      timeout: 15s
+      retries: 10
+    networks:
+      - "pix"
+networks:
+  pix:
+    external: true
