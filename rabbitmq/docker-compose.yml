@@ -7,7 +7,7 @@ services:
     environment: 
       VIRTUAL_HOST: rabbitmq.pix.dns-cloud.net
       LETSENCRYPT_HOST: rabbitmq.pix.dns-cloud.net
-      VITUAL_PORT: 5672
+      VITUAL_PORT: 15672
     volumes: 
       - ./etc/definitions.json:/etc/rabbitmq/definitions.json
       - ./etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
@@ -15,6 +15,7 @@ services:
       - ./logs:/var/log/rabbitmq/log
     ports:
       - "15672:15672"
+      - "5672:5672"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:15672"]
       interval: 5s
