@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebhookPix.Model;
+using WebhookPix.BRCode;
+using WebhookPix.Model.Events;
 
 namespace WebhookPix.Controllers
 {
@@ -21,7 +22,7 @@ namespace WebhookPix.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok("Server online");
+            return Ok("Servidor online");
         }
 
         [HttpPost]

@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
-namespace WebhookPix.Model
+namespace WebhookPix.Model.Events
 {
     public class Pix
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebhookPix.Model
+namespace WebhookPix.Model.Events
 {
     public class PixEvent
     {

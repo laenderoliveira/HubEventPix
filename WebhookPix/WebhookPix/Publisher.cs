@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using WebhookPix.Model;
+using WebhookPix.Model.Events;
 
 namespace WebhookPix
 {
